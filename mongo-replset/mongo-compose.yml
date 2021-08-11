@@ -1,0 +1,43 @@
+version: '3.1'
+services:
+  mongo1:
+    image: mongo-replset
+    hostname: mongo1
+    container_name: mongo1
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - $HOME/mongodb/data1:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: lumi
+      MONGO_INITDB_ROOT_PASSWORD: lumi2021
+    command: mongod --auth --keyFile /app/auth.key --bind_ip_all --replSet rs0
+
+  mongo2:
+    image: mongo-replset
+    hostname: mongo2
+    container_name: mongo2
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - $HOME/mongodb/data2:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: lumi
+      MONGO_INITDB_ROOT_PASSWORD: lumi2021
+    command: mongod --auth --keyFile /app/auth.key --bind_ip_all --replSet rs0
+
+  mongo3:
+    image: mongo-replset
+    hostname: mongo3
+    container_name: mongo3
+    restart: always
+    ports:
+      - 27019:27017
+    volumes:
+      - $HOME/mongodb/data3:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: lumi
+      MONGO_INITDB_ROOT_PASSWORD: lumi2021
+    command: mongod --auth --keyFile /app/auth.key --bind_ip_all --replSet rs0
