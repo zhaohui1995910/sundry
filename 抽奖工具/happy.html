@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>抽奖</title>
+    <!--suppress JSUnresolvedLibraryURL -->
+    <!--    <script src="./jquery.js"></script>-->
+    <script src="./yanhua1.js"></script>
+    <script src="./yanhua2.js"></script>
+    <script src="./vue.js"></script>
+    <style>
+        #particles {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+        }
+
+        :root, button {
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .color {
+            background: linear-gradient(to right, #e1e0ff, #d7fadd);
+        }
+
+        body {
+            background: white;
+            user-select: none;
+            position: relative;
+            height: 100vh;
+            margin: 0;
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            /*min-height: 100vh;*/
+            /*background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%);*/
+            /*overflow: hidden;*/
+        }
+
+        h1 {
+            padding-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 16px;
+        }
+
+        p {
+            padding-bottom: 15px;
+        }
+
+        p:last-of-type {
+            padding-bottom: 0;
+        }
+
+        .try-again {
+            cursor: pointer;
+            position: relative;
+            font-size: 16px;
+        }
+
+        .try-again:after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            right: 15px;
+            height: 1px;
+            top: 100%;
+            background: #ebebeb;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .try-again:hover:after {
+            left: 40%;
+            right: 40%;
+        }
+
+        #app {
+            height: 100vh;
+        }
+
+        #app ul {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            transform: translate(-20%, -50%);
+        }
+
+        .wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button {
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            -webkit-appearance: none;
+            background: none;
+            outline: none;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-radius: 2px;
+            transition: all 0.5s ease;
+            font-weight: 600;
+            font-size: 40px;
+            height: 100px;
+            width: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 0px;
+            box-shadow: 0 0 0 white, 0 0 0 white;
+        }
+
+        .button-text {
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(to right, #ff4b4b, #de2a2a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .button-circle {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 6px;
+            width: 6px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #e41010, 0 0 20px #e80707, 0 0 30px #f60000;
+            transition: all 0.5s ease;
+        }
+
+        .button-circle2 {
+            top: auto;
+            bottom: 0;
+        }
+
+        .button-circle3 {
+            left: auto;
+            right: 0;
+            box-shadow: 0 0 10px #e41010, 0 0 20px #e80707, 0 0 30px #f60000;
+        }
+
+        .button-circle4 {
+            left: auto;
+            top: auto;
+            bottom: 0;
+            right: 0;
+            box-shadow: 0 0 10px #e41010, 0 0 20px #e80707, 0 0 30px #f60000;
+        }
+
+        .button:hover {
+            box-shadow: 0 0 10px #e41010, 0 0 20px #e80707, 0 0 30px #f60000;
+        }
+
+        .button:hover .button-circle1 {
+            transform: translate(-15px, -15px) scale(0);
+        }
+
+        .button:hover .button-circle2 {
+            transform: translate(-15px, 15px) scale(0);
+        }
+
+        .button:hover .button-circle3 {
+            transform: translate(15px, -15px) scale(0);
+        }
+
+        .button:hover .button-circle4 {
+            transform: translate(15px, 15px) scale(0);
+        }
+
+        .button:hover .button-circle {
+            box-shadow: none;
+        }
+
+        .popup {
+            opacity: 0;
+            visibility: hidden;
+            height: 400px;
+            width: 400px;
+            flex-shrink: 0;
+            border-radius: 3px;
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease
+        }
+
+        .popup-inside {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 50%;
+            box-shadow: 0 0 0 black;
+            transition: box-shadow 0.5s ease 0.7s,
+            border-radius 0.35s ease 0.7s;
+        }
+
+        .backgrounds {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .background {
+            --offset: 0;
+            position: absolute;
+            left: var(--offset);
+            right: var(--offset);
+            bottom: var(--offset);
+            top: var(--offset);
+            background: linear-gradient(to right, #504bff, #4cfa63);
+            transform: scale(0);
+            transition: all 0.5s ease 0s;
+            border-radius: 50%;
+        }
+
+        .background2 {
+            --offset: 10%;
+            position: absolute;
+            left: var(--offset);
+            right: var(--offset);
+            bottom: var(--offset);
+            top: var(--offset);
+            background: linear-gradient(to right, #6665ff, #69fa7f);
+            transform: scale(0);
+            transition: all 0.5s ease 0.1s;
+        }
+
+        .background3 {
+            --offset: 20%;
+            position: absolute;
+            left: var(--offset);
+            right: var(--offset);
+            bottom: var(--offset);
+            top: var(--offset);
+            background: linear-gradient(to right, #8583ff, #85fa99);
+            z-index: 2;
+            transition: all 0.5s ease 0.2s;
+        }
+
+        .background4 {
+            --offset: 30%;
+            position: absolute;
+            left: var(--offset);
+            right: var(--offset);
+            bottom: var(--offset);
+            top: var(--offset);
+            background: linear-gradient(to right, #aaaaff, #a7fab7);
+            z-index: 3;
+            transition: all 0.5s ease 0.3s;
+        }
+
+        .background5 {
+            --offset: 40%;
+            position: absolute;
+            left: var(--offset);
+            right: var(--offset);
+            bottom: var(--offset);
+            top: var(--offset);
+            background: linear-gradient(to right, #c9c8ff, #c3fad1);
+            z-index: 4;
+            transition: all 0.5s ease 0.4s;
+        }
+
+        .background6 {
+            --offset: 40%;
+            position: absolute;
+            left: var(--offset);
+            right: var(--offset);
+            bottom: var(--offset);
+            top: var(--offset);
+            background: white;
+            z-index: 5;
+            transition: all 0.8s ease 0.4s;
+        }
+
+        .content {
+            --offset: 0;
+            position: absolute;
+            left: var(--offset);
+            right: var(--offset);
+            bottom: var(--offset);
+            top: var(--offset);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.35s ease 0.75s;
+            z-index: 10;
+        }
+
+        .content-wrapper {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        body.active .content {
+            opacity: 1;
+            transform: none;
+        }
+
+        body.active .popup {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        body.active .popup-inside {
+            border-radius: 0;
+            box-shadow: -50px 0 200px -50px #f01717, 50px 0 200px -50px #da4230;
+        }
+
+        body.active .background {
+            transform: scale(1);
+        }
+
+        body.active .background6 {
+            transform: scale(8);
+        }
+    </style>
+
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li v-for="(item, index) in items" :key="index" style="font-size: 17px; color: yellow">{{ item.name }}</li>
+    </ul>
+
+    <canvas class="fireworks"></canvas>
+
+    <div class="wrapper">
+        <div class="button" @click="randomGet">
+            <span class="button-text">抽奖</span>
+            <div class="button-backgrounds">
+                <div class="button-circle button-circle1"></div>
+                <div class="button-circle button-circle2"></div>
+                <div class="button-circle button-circle3"></div>
+                <div class="button-circle button-circle4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="popup">
+            <div class="popup-inside">
+                <div class="backgrounds">
+                    <div class="background"></div>
+                    <div class="background background2"></div>
+                    <div class="background background3"></div>
+                    <div class="background background4"></div>
+                    <div class="background background5"></div>
+                    <div class="background background6"></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="content-wrapper" @click="document.body.classList.remove('active')">
+                    <h1 style="font-size: 25px;color: red">{{result}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            items: [
+                {'name': 'iphone13', 'rate': 1},
+                {'name': '200元蓝牙耳机', 'rate': 10},
+                {'name': '现金50', 'rate': 10},
+                {'name': '现金66', 'rate': 10},
+                {'name': '现金88', 'rate': 10},
+                {'name': '现金99', 'rate': 10},
+                {'name': '价值99元王者荣耀皮肤一套', 'rate': 10},
+                {'name': '价值100元和平精英皮肤一套', 'rate': 10},
+                {'name': '价值100元羽毛球拍一套', 'rate': 10},
+                {'name': '价值100元乒乓球拍一套', 'rate': 10},
+                {'name': '价值500元球鞋一双', 'rate': 1},
+            ],
+            itemPool: [],
+            result: ''
+        },
+        methods: {
+            randomGet() {
+                console.log('itemPool.length', this.itemPool.length)
+                let i = Math.random() * this.itemPool.length
+                console.log('randomGet', i)
+
+                this.loadingDh()
+                this.result = this.itemPool[i | 0]
+
+                setTimeout(() => {
+                    document.body.classList.add('active')
+                }, 3000)
+            },
+            loadingDh() {
+                window.human = false;
+
+                var canvasEl = document.querySelector('.fireworks');
+                var ctx = canvasEl.getContext('2d');
+                var numberOfParticules = 30;
+                var pointerX = 0;
+                var pointerY = 0;
+                var tap = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown';
+                var colors = ['#FF1461', '#18FF92', '#5A87FF', '#FBF38C'];
+
+                function setCanvasSize() {
+                    canvasEl.width = window.innerWidth * 2;
+                    canvasEl.height = window.innerHeight * 2;
+                    canvasEl.style.width = window.innerWidth + 'px';
+                    canvasEl.style.height = window.innerHeight + 'px';
+                    canvasEl.getContext('2d').scale(2, 2);
+                }
+
+                function updateCoords(e) {
+                    pointerX = e.clientX || e.touches[0].clientX;
+                    pointerY = e.clientY || e.touches[0].clientY;
+                }
+
+                function setParticuleDirection(p) {
+                    var angle = anime.random(0, 360) * Math.PI / 180;
+                    var value = anime.random(50, 180);
+                    var radius = [-1, 1][anime.random(0, 1)] * value;
+                    return {
+                        x: p.x + radius * Math.cos(angle),
+                        y: p.y + radius * Math.sin(angle)
+                    }
+                }
+
+                function createParticule(x, y) {
+                    var p = {};
+                    p.x = x;
+                    p.y = y;
+                    p.color = colors[anime.random(0, colors.length - 1)];
+                    p.radius = anime.random(16, 32);
+                    p.endPos = setParticuleDirection(p);
+                    p.draw = function () {
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI, true);
+                        ctx.fillStyle = p.color;
+                        ctx.fill();
+                    }
+                    return p;
+                }
+
+                function createCircle(x, y) {
+                    var p = {};
+                    p.x = x;
+                    p.y = y;
+                    p.color = '#FFF';
+                    p.radius = 0.1;
+                    p.alpha = .5;
+                    p.lineWidth = 6;
+                    p.draw = function () {
+                        ctx.globalAlpha = p.alpha;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI, true);
+                        ctx.lineWidth = p.lineWidth;
+                        ctx.strokeStyle = p.color;
+                        ctx.stroke();
+                        ctx.globalAlpha = 1;
+                    }
+                    return p;
+                }
+
+                function renderParticule(anim) {
+                    for (var i = 0; i < anim.animatables.length; i++) {
+                        anim.animatables[i].target.draw();
+                    }
+                }
+
+                function animateParticules(x, y) {
+                    var circle = createCircle(x, y);
+                    var particules = [];
+                    for (var i = 0; i < numberOfParticules; i++) {
+                        particules.push(createParticule(x, y));
+                    }
+                    anime.timeline().add({
+                        targets: particules,
+                        x: function (p) {
+                            return p.endPos.x;
+                        },
+                        y: function (p) {
+                            return p.endPos.y;
+                        },
+                        radius: 0.1,
+                        duration: anime.random(1200, 1800),
+                        easing: 'easeOutExpo',
+                        update: renderParticule
+                    })
+                        .add({
+                            targets: circle,
+                            radius: anime.random(80, 160),
+                            lineWidth: 0,
+                            alpha: {
+                                value: 0,
+                                easing: 'linear',
+                                duration: anime.random(600, 800),
+                            },
+                            duration: anime.random(1200, 1800),
+                            easing: 'easeOutExpo',
+                            update: renderParticule,
+                            offset: 0
+                        });
+                }
+
+                var render = anime({
+                    duration: Infinity,
+                    update: function () {
+                        ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                    }
+                });
+
+                document.addEventListener(tap, function (e) {
+                    window.human = true;
+                    render.play();
+                    updateCoords(e);
+                    animateParticules(pointerX, pointerY);
+                }, false);
+
+                var centerX = window.innerWidth / 2;
+                var centerY = window.innerHeight / 2;
+
+                function autoClick() {
+                    if (window.human) return;
+                    animateParticules(
+                        anime.random(centerX - 100, centerX + 100),
+                        anime.random(centerY - 50, centerY + 50)
+                    );
+                    anime({duration: 200}).finished.then(autoClick);
+                }
+
+                autoClick();
+                setCanvasSize();
+                window.addEventListener('resize', setCanvasSize, false);
+
+            }
+        },
+        mounted() {
+            console.log('执行mounted')
+            this.items.forEach((item) => {
+                for (let i = 0; i < item['rate']; i++) {
+                    // console.log(item)
+                    this.itemPool.push(item['name'])
+                }
+            })
+        }
+    })
+</script>
+<style>
+    #app {
+        width: 100%;
+        height: 100%; /**宽高100%是为了图片铺满屏幕 */
+        z-index: -1;
+        background: url("./bjt.jpeg") no-repeat;
+        background-size: 100% 100%;
+    }
+</style>
+</html>
