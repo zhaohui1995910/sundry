@@ -1,0 +1,28 @@
+
+一、NFS概述
+    NFS 是一种基于 TCP/IP 传输的网络文件系统协议，最初由 sun 公司开发。通过使用 NFS协议，客户机可以像访问本地目录一样访问远程 NFS 服务器中的共享资源。
+    NFS 也是 NAS存储设备必然支持的一种协议，但是因为没有用户认证机制，而且数据在网络上明文传输，安全性很差，所以一般只能在局域网中使用。
+
+二、安装
+    nfs-utils、rpcbind
+
+    yum install nfs-utils rpcbind -y
+
+三、
+    设置共享目录和权限
+    vim /etc/exports  例如 /data 192.168.125.0/24(rw,sync)
+
+四、启动服务端
+    启动nfs，rpc服务
+    systemctl start nfs
+    systemctl start rpcbind
+    systemctl enable nfs
+    systemctl enable rpcbind
+
+五、客户端启动并挂载
+    yum install nfs-utils rpcbind -y
+
+    systemctl start rpcbind
+    systemctl enable rpcbind
+
+    挂载：mount -t nfs 服务端IP:/data /data
