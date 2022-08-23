@@ -1,0 +1,36 @@
+fdisk
+    操作当前挂载的磁盘（查看，分区，编辑）
+
+df -hT
+    查看文件系统 -T 显示文件系统类型
+
+lsblk
+    查看树状磁盘挂载情况
+
+
+pv：物理卷
+
+vg：卷组
+
+lv：逻辑卷
+
+
+扩容步骤
+    1、对磁盘分区
+        fdisk /dev/sda
+
+    2、格式化分区（对应要扩容的文件系统相同的类型，例如xfs）
+        mkfs -t xfs /dev/sda1
+
+    3、创建物理卷
+        pvcreate /dev/sda1
+
+    4、修改物理卷类型 8e
+        fdisk /dev/sda
+
+    5、扩容卷组
+        vgextend 卷组 /dev/sda1
+
+    6、分配逻辑卷
+        lvextend -L +10G 卷组
+

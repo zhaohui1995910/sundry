@@ -1,0 +1,15 @@
+github项目
+https://github.com/acmesh-official/acme.sh.git
+
+一、
+
+    1、介绍ssl
+
+    2、申请ssl证书的验证方式（dns, http)
+
+
+二、
+
+    1、推荐相关docker-image
+        （1）、nginx-proxy
+        （2）、letsproxy
