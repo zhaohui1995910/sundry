@@ -1,0 +1,16 @@
+文章：https://www.cnblogs.com/f-ck-need-u/p/10482832.html
+
+1、ssh安全隧道：本地端口转发
+    ssh -L [local_bind_addr:]local_port:remote:remote_port middle_host
+    例子：
+        [root@xuexi ~]# ssh -g -L 2222:host2:80 host3
+
+2、ssh安全隧道：远程端口转发
+    ssh -R [bind_addr:]remote1_port:host:port remote1
+    例子
+        [root@xuexi ~]# ssh -R 22333:host2:80 host1 或 [root@xuexi ~]# ssh -R 22333:host3:80 host1
+
+3、ssh安全隧道：动态端口转发
+    ssh -D [bind_addr:]port remote
+    例子
+        ssh -Nfg -D 2222 host3
