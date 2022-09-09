@@ -52,3 +52,7 @@ lv：逻辑卷
               执行 echo "- - -" > host2
 
               每个刷新的时候观察一下，是否fdisk已经显示
+
+
+参考文档
+http://t.zoukankan.com/leekeggs-p-9347273.html
