@@ -45,11 +45,11 @@ lv：逻辑卷
     刷新命令： cd /sys/class/scsi_host
               查看host文件  ls
 
-              执行 echo "- - -" > host0
+              执行 echo "- - -" > host0/scan
               或
-              执行 echo "- - -" > host1
+              执行 echo "- - -" > host1/scan
               或
-              执行 echo "- - -" > host2
+              执行 echo "- - -" > host2/scan
 
               每个刷新的时候观察一下，是否fdisk已经显示
 
