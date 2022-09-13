@@ -1,0 +1,36 @@
+两种主要文件
+
+.conf
+
+.zones
+
+
+zones文件格式
+
+例子1  @ 符号的意思应该是 conf配置中 zone 定义的域名
+    $TTL    604800
+    @       IN      SOA     spiders.com.     root.localhost. (
+                         1663034208         ; Serial
+                             604800         ; Refresh
+                              86400         ; Retry
+                            2419200         ; Expire
+                             604800 )       ; Negative Cache TTL
+    ;
+    // 配置NS记录
+    @                  IN   NS      ns
+    ns                 IN   A       192.168.125.115
+    // 配置A记录
+    @                  IN   A       192.168.125.31
+    www                IN   A       192.168.125.115
+
+
+例子2
+    $ttl 38400
+    spider.com.     IN      SOA     3548dea3ad89. 971088957.qq.com. (
+                            1663034442
+                            10800
+                            3600
+                            604800
+                            38400 )
+    spider.com.     IN      NS      3548dea3ad89.
+    lumi.spider.com.        IN      A       192.168.125.115

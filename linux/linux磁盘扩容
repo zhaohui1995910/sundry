@@ -53,6 +53,11 @@ lv：逻辑卷
 
               每个刷新的时候观察一下，是否fdisk已经显示
 
+刷新文件系统
+    resize2fs 命令 ：针对的是ext2、ext3、ext4文件系统
+
+    xfs_growfs 命令 ：针对的是xfs文件系统
+
 
 参考文档
 http://t.zoukankan.com/leekeggs-p-9347273.html
