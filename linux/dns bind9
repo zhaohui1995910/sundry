@@ -17,8 +17,11 @@ zones文件格式
                              604800 )       ; Negative Cache TTL
     ;
     // 配置NS记录
-    @                  IN   NS      ns
-    ns                 IN   A       192.168.125.115
+    @                  IN   NS      ns1
+    @                  IN   NS      ns2  # 从服务器
+
+    ns1                IN   A       192.168.125.115
+    ns2                IN   A       192.168.125.115
     // 配置A记录
     @                  IN   A       192.168.125.31
     www                IN   A       192.168.125.115
@@ -34,3 +37,27 @@ zones文件格式
                             38400 )
     spider.com.     IN      NS      3548dea3ad89.
     lumi.spider.com.        IN      A       192.168.125.115
+
+
+
+主从配置
+
+
+主服务器配置
+zone "abc.com" IN {
+    type master;
+    file "abc.com.zones";
+    allow-transfer { 192.168.125.30; };  # 从服务器地址
+    notify yes;
+    also-notify { 192.168.125.30; };
+};
+
+从服务器配置
+zone "abc.com" IN {
+        type slave;
+        file "slaves/abc.com.zones";
+        masters { 192.168.125.115; };  # 主服务器地址
+};
+
+
+当从服务器启动，会自动获取主服务器的区域文件 abc.com.zones 创建到"slaves/abc.com.zones"  # 注意slaves文件夹权限，可能会导致同步失败。
