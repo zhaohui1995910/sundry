@@ -40,24 +40,58 @@ lv：逻辑卷
     8、将逻辑卷挂载到对应的目录（可选）
 
 
-
-给虚拟机扩了磁盘空间 或 新挂了磁盘，但是fdisk没有显示
-    刷新命令： cd /sys/class/scsi_host
-              查看host文件  ls
-
-              执行 echo "- - -" > host0/scan
-              或
-              执行 echo "- - -" > host1/scan
-              或
-              执行 echo "- - -" > host2/scan
-
-              每个刷新的时候观察一下，是否fdisk已经显示
-
 刷新文件系统
     resize2fs 命令 ：针对的是ext2、ext3、ext4文件系统
 
     xfs_growfs 命令 ：针对的是xfs文件系统
 
+
+
+给虚拟机扩了磁盘空间 或 新挂了磁盘，但是fdisk没有显示
+
+    情况一：修改原来磁盘大小后，系统磁盘没有变化
+
+        方法一： 重启服务器（不推荐）
+
+        方法二：重新扫描SCSI设备
+
+            # 重新扫描 SCSI 设备的步骤。
+
+            # 第1、检查 scsi 设备的名称。
+
+            ls /sys/class/scsi_device/
+
+            # 第2、 然后重新扫描 scsi 总线。用上一步找到的总线名称替换“0:0:0:0”。每个冒号前面都有一个斜杠
+
+            echo 1 > /sys/class/scsi_device/0\:0\:0\:0/device/rescan
+
+            # 第3、扫描后查看是否显示已更改的磁盘大小。如果没有，请将第2中断总线名换成另外一个再试一次
+
+            fdisk -l   或者 lsblk
+
+    情况二：新增磁盘，磁盘不显示
+
+        方法一： 重启服务器（不推荐）
+
+        方法二：重新扫描主机，需要重新扫描主机以检测新的 scsi 总线。
+
+            ls  /sys/class/scsi_host/
+
+            # total 0
+
+            # drwxr-xr-x  3 root root 0 Feb 13 02:55 .
+
+            # drwxr-xr-x 39 root root 0 Feb 13 02:57 ..
+
+            # drwxr-xr-x  2 root root 0 Feb 13 02:57 host0
+
+            # 你的主机设备叫做 host0，重新扫描:
+
+            如果有多个host 每个都要执行一下，下面的命令
+
+            echo "- - -" > /sys/class/scsi_host/host0/scan
+
+            echo "- - -" > /sys/class/scsi_host/host1/scan
 
 参考文档
 http://t.zoukankan.com/leekeggs-p-9347273.html
