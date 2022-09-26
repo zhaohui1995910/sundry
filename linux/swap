@@ -1,0 +1,15 @@
+swap 有两种方式
+    1、创建swap文件
+
+        dd if=/dev/zero of=<swap文件路径> bs=1024 count=<swap字节大小>
+        mkswap <swap文件路径>
+        swapon <swap文件路径>
+
+        vim /etc/fstab
+            <swapfile> swap swap defaults 0 0
+
+    2、创建swap逻辑卷
+
+
+若需要永久修改此配置，在系统重启之后也生效的话，可以修改 /etc/sysctl.conf文件，并增加以下内容：
+vm.swappiness=0
