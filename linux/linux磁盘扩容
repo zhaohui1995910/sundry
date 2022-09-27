@@ -32,7 +32,7 @@ lv：逻辑卷
         vgextend 卷组 /dev/sda1
 
     6、分配逻辑卷
-        lvextend -L +10G 卷组
+        lvextend -L +10G 逻辑卷
 
     7、对新创建的逻辑卷格式化文件系统
         mkfs.xfs /dev/mapper/逻辑卷
