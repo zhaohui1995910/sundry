@@ -14,3 +14,7 @@
     ssh -D [bind_addr:]port remote
     例子
         ssh -Nfg -D 2222 host3
+
+
+autossh
+    -M 参数：启动一个端口号，用来监控ssh连接情况，如果连接失败，会自动重连
