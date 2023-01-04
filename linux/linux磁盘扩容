@@ -98,5 +98,11 @@ lv：逻辑卷
     执行partprobe命令  让系统读取分区信息
     说明：partprobe包含在parted的rpm软件包中。partprobe可以修改kernel中分区表，使kernel重新读取分区表。 因此，使用该命令就可以创建分区并且在不重新启动机器的情况下系统能够识别这些分区。
 
+# 磁盘扩容最后一个分区
+growpart /dev/sdc 1
+fsadm resize /dev/sdc1
+
 参考文档
 http://t.zoukankan.com/leekeggs-p-9347273.html
+
+
