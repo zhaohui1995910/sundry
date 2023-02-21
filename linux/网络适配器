@@ -1,0 +1,9 @@
+vm配置完毕网卡之后 /etc/sysconfig/network-scripts/ 找不到配置文件
+
+    1、先使用nmcli con show 查看网卡设备名称
+
+    2、生成配置文件：nmcli con add con-name {设备名称} type ethernet ifname {设备名称}
+
+    3、/etc/sysconfig/network-scripts/路径下就可以找到对应的配置文件了，修改参数
+
+    4、重启网卡 systemctl restart network
