@@ -1,0 +1,44 @@
+字符：我们能够看懂的文本
+
+字节：计算机存储或传输的基本单位，由二进制组成
+
+编码：不同的编码所表示的 字符 对应的 字节是不同的。 有的是 一个字节 对应 一个字符。有的 多个字节 对应 一个字符。所以不同的编码对应的字符不同，对应的字节大小也不同。 编码是将字符转为二进制的一种规则，所以字符限制表现的进制是多少，可以是10，可以是二进制，可以是16进制。所以是几进制表示它都是对应那个字符。知识通常用16进制表示，因为紧凑易读。
+
+二进制：计算机传输是已字节为单位的二进制数据（8个二进制bit组成的 byte）。
+
+图片通常以二进制形式存储，又一个像素点数组构成。 每个像素点以二进制形式存储。
+图片的不同文件格式可代表不同的编码和压缩方式。
+
+
+chrome调试大全
+
+Mysql WorkBench
+
+
+# 程序员修养摘要
+Bad architecture causes more problems than bad code.
+
+You will spend more time thinking than coding.
+
+The best programmers are always building things.
+
+There’s always a better way.
+
+Code reviews by your peers will make all of you better.
+
+Fewer features for better code is always the right answer in the end.
+
+If it’s not tested, it doesn’t work.
+
+Don’t reinvent the wheel, library code is there to help.
+
+Code that’s hard to understand is hard to maintain.
+
+Code that’s hard to maintain is next to useless.
+
+Always know how your business makes money, that determines who gets paid what.
+
+If you want to feel important as a software developer, work at a tech company.
+
+# 97个， 锻炼英文能力
+https://97-things-every-x-should-know.gitbooks.io/97-things-every-programmer-should-know/content/en/thing_01/
